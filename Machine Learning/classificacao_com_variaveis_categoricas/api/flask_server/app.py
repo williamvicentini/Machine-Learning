@@ -36,14 +36,14 @@ def classificar():
     onehotencoder = load('flask_server/dicionario.joblib')
     labelencorder_saida = load('flask_server/saidadicionario.joblib')
 
-    entradaencoded = onehotencorder.transform(entrada)
+    entradaencoded = onehotencoder.transform(entrada)
 
     scaler = StandardScaler(with_mean=False)
 
-    entradaescalonada = scaler.transform(entradaencoded)
+    entradaescalonada = scaler.fit_transform(entradaencoded)
 
     previsao = modelo.predict(entradaescalonada)
        
-    return json.dumps({"valor_previsao": labelencorder_saida.inverse_transform(previsao[0].astype(int))[0]}, cls=NumpyEncoder)
+    return json.dumps({"valor_previsao": labelencorder_saida.inverse_transform(previsao[0].astype(int))[0]})
 
 app.run(port = 5000, debug= False)
