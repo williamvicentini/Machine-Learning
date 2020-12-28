@@ -13,6 +13,12 @@ import tensorflow as tf
 
 base = pd.read_csv('/content/census.csv')
 
+def trim_all_columns(df):
+    trim_strings = lambda x: x.strip() if isinstance(x, str) else x
+    return df.applymap(trim_strings)
+
+base = trim_all_columns(base)
+
 base.head()
 
 previsores = base.iloc[:,0:14].values
@@ -67,7 +73,7 @@ classifier.compile(optimizer='Adam', loss='binary_crossentropy', metrics = ['acc
 
 epochs_hist = classifier.fit(X_train, y_train, epochs=200)
 
-entrada = [[39,' State-gov',77516,' Bachelors',13,' Never-married',' Adm-clerical',' Not-in-family',' White',' Male',2174,0,40,' United-States']]
+entrada = [[39,'State-gov',77516,'Bachelors',13,'Never-married','Adm-clerical','Not-in-family','White','Male',2174,0,40,'United-States']]
 
 entradaencoded = onehotencorder.transform(entrada)
 
@@ -77,11 +83,11 @@ previsao = classifier.predict(entradaescalonada)
 
 labelencorder_saida.inverse_transform(previsao[0].astype(int))
 
-base.loc[base['income'] == ' >50K']
+base.loc[base['income'] == '>50K']
 
-entrada = base.loc[base['income'] == ' >50K']
+entrada = base.loc[base['income'] == '>50K']
 
-entrada = base.loc[base['income'] == ' >50K'].iloc[1:2,0:14]
+entrada = base.loc[base['income'] == '>50K'].iloc[1:2,0:14]
 
 entrada
 
